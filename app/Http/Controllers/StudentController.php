@@ -11,44 +11,21 @@ class StudentController extends Controller
     {
         $students = $this->students();
 
-        $previousIndexes = [];
+        $indexes = [];
         if (Storage::disk('local')->exists('indexes.txt')) {
-            $previousIndexes = $this->getPreviousIndexes();
+            $indexes = json_decode(Storage::get('indexes.txt'));
         }
 
-        $selectedIndexes = $this->selectRandomIndexes($students, $previousIndexes);
-
-        $this->saveSelectedIndexes($selectedIndexes);
-
+        if (count($indexes) === 0) {
+            $selectedStudents = collect($students)->random(4);
+        } else {
+            $selectedStudents = collect($students)->only($indexes)->values();
+        }
 
         return [
             "totalStudent" => count($students),
-            "students" => collect($students)->only($selectedIndexes)->values()
+            "students" => $selectedStudents
         ];
-    }
-
-
-    private function selectRandomIndexes(array $students, array $previousIndexes): array
-    {
-        $num = 4;
-
-        $indexes = collect(range(0, count($students) - 1))->except($previousIndexes);
-
-        if ($indexes->count() < $num) {
-            $num = $indexes->count();
-        }
-
-        return $indexes->shuffle()->slice(0, $num)->toArray();
-    }
-
-    private function saveSelectedIndexes(array $indexes)
-    {
-        Storage::disk('local')->put('indexes.txt', json_encode($indexes));
-    }
-
-    private function getPreviousIndexes()
-    {
-        return json_decode(Storage::get('indexes.txt'));
     }
 
     public function students()
