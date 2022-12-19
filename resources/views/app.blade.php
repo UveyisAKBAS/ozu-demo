@@ -1,21 +1,8 @@
-{{--<!DOCTYPE html>--}}
-{{--<html>--}}
-{{--<head>--}}
-{{--    <meta charset="utf-8">--}}
-{{--    <meta name="viewport" content="width=device-width, initial-scale=1">--}}
-{{--    <title>ÖzÜ Demo</title>--}}
-
-{{--    @vite('resources/css/app.css')--}}
-{{--</head>--}}
-{{--<body>--}}
-{{--<div id="app">--}}
-{{--</div>--}}
-{{--@vite('resources/js/app.js')--}}
-{{--</body>--}}
-{{--</html>--}}
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="tr">
 <head>
+    {{--    <meta name="viewport" content="width=device-width, initial-scale=1">--}}
+    @vite('resources/css/app.css')
 
     <meta charset="utf-8" />
     <link rel="shortcut icon" href="https://www.ozyegin.edu.tr/sites/default/files/96.png" type="image/png" />
@@ -125,7 +112,6 @@
             <section class="main-section">
 
                 <!------------------------ HEADER ------------------------>
-
                 <header>
 
                     <div class="ana">
@@ -367,12 +353,12 @@
 
                 </header> <!-- /header -->
 
-
                 <!------------------------ MAIN -------------------------->
+                <div id="app">
+                </div>
 
                 <div class="ortaDiv page">
                     <div class="row">
-
                         <!-- Mezunlar -->
                         <div class="medium-9 columns content">
                             <h3 class="anaTitle" id="page-title">3 Mezun</h3>
@@ -472,7 +458,7 @@
                             </div>
                         </div>
 
-                        <!-- // medium-8 -->
+                        <!-- Sağ Menü-->
                         <div class="medium-3 columns sagMenu">
 
                             <div class="block " data-bid="704">
@@ -503,14 +489,14 @@
                         </div>
 
                         <!-- /sidebar-first -->
+                    </div>
+                    {{-- Subcomponent --}}
+                    <div class="row" style="display:block;">
 
-                    </div><!-- // row -->
-                    <!-- /subcontent -->
-                </div> <!-- /main -->
-
+                    </div>
+                </div>
 
                 <!------------------------ FOOTER ------------------------>
-
                 <footer id="footer">
                     <div class="ust">
                         <div class="row">
@@ -607,13 +593,15 @@
                                     </ul>
                                 </div> <!-- /block -->            </div><!-- row -->
                         </div><!-- footer alt -->
-                </footer> <!-- /footer -->
-
+                </footer>
             </section>
         </div>
     </div>
 
 </div>
+
+{{-- Code --}}
+@vite('resources/js/app.js')
 
 <script>
 
