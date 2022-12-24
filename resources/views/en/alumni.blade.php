@@ -243,7 +243,7 @@
 <div class="ortaDiv page">
     <div class="row">
         <div class="medium-9 columns content">
-            <h1 class="anaTitle" style="display: none;" id="page-title">3 BS Alumni</h1><h2 class="anaTitle" style="display: none;" id="page-title">{{ count($students) }} BS Alumni</h2><h3 class="anaTitle" id="page-title">3 BS Alumni</h3>
+            <h3 class="anaTitle" id="page-title">{{ count($students) }} BS Alumni</h3>
             <div class="gridSistem">
 
                 <div class="row">
