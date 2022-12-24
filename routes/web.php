@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\StudentController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,8 +14,33 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('app');
-});
+Route::redirect("/", "/demo/tr");
+Route::redirect("/demo", "demo/tr");
 
-Route::get('/students', [StudentController::class, 'index']);
+Route::get('/demo/{lang?}', function ($lang = "tr") {
+
+    if ($lang !== "tr") {
+        $lang = "en";
+    }
+
+    $students = json_decode(Storage::get('students.txt'));
+
+    $indexes = [];
+    if (Storage::disk('local')->exists('indexes.txt')) {
+        $indexes = json_decode(Storage::get('indexes.txt'));
+    }
+
+    if (count($indexes) === 0) {
+        $selectedStudents = collect($students)->random(4);
+    } else {
+        $selectedStudents = collect($students)->only($indexes)->values();
+    }
+
+
+    return view('app',
+        [
+            "lang" => $lang,
+            "students" => $selectedStudents,
+            "totalStudentNumber" => count($students),
+        ]);
+});

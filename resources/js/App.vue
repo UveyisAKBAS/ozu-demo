@@ -110,17 +110,3 @@ onMounted(function () {
     loadStudents()
 })
 </script>
-
-<style>
-.gridSistem .row .columns .blok #stil522.listIcerik, .gridSistem .row .columns .blok #stil522.listIcerik ul, .gridSistem .row .columns .blok #stil522.listIcerik ul li, .gridSistem .row .columns .blok #stil522.listIcerik a, .gridSistem .row .columns .blok #stil522.listIcerik ul li a,.gridSistem .row .columns .blok #stil522.textIcerik, .gridSistem .row .columns .blok #stil522.textIcerik strong,.gridSistem .row .columns .blok #stil522.textIcerik span, .gridSistem .row .columns .blok #stil522.textIcerik p, .gridSistem .row .columns .blok #stil522.textIcerik ul, .gridSistem .row .columns .blok #stil522.textIcerik ul li, .gridSistem .row .columns .blok #stil522.textIcerik a {
-  color: black !important;
-}
-
-.gridSistem .row .columns .blok #stil515.listIcerik, .gridSistem .row .columns .blok #stil515.listIcerik ul, .gridSistem .row .columns .blok #stil515.listIcerik ul li, .gridSistem .row .columns .blok #stil515.listIcerik a, .gridSistem .row .columns .blok #stil515.listIcerik ul li a,.gridSistem .row .columns .blok #stil515.textIcerik, .gridSistem .row .columns .blok #stil515.textIcerik strong,.gridSistem .row .columns .blok #stil515.textIcerik span, .gridSistem .row .columns .blok #stil515.textIcerik p, .gridSistem .row .columns .blok #stil515.textIcerik ul, .gridSistem .row .columns .blok #stil515.textIcerik ul li, .gridSistem .row .columns .blok #stil515.textIcerik a {
-  color: black !important;
-}
-
-.ortaDiv .content ul li {padding: 8px 0;}
-.gridSistem .row .columns .blok.gridNewsList .haberListe ul li  {padding: 0;}
-
-</style>
