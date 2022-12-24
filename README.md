@@ -1,66 +1,74 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Proje Hakkında
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Installation & Demo
+`Install.md` dosyasını takip ederek projeyi çalıştırabilirsiniz.  
+Sonrasında aşağıdaki adreslerden demoyu görebilirsiniz:
+```text
+Turkish ---> http://127.0.0.1:8000/demo/tr
+English ---> http://127.0.0.1:8000/demo/en
+```  
 
-## About Laravel
+## Özet
+Demo, 3 Mezun sayfasının kopyasıdır.
+Seçilen mezunların dinamik olarak değiştiği bir örnektir.
+Uygulama kurulumu sırasında bir grup öğrenci random olarak üretilir.
+Seçilecek öğrenciler belirli aralıklarla güncellenir.
+Gösterilen öğrenciler bir sonraki random seçimde gösterilmez.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Öğrencilerin Üretilmesi
+Örnek: Aşağıdaki komut ile 50 random öğrenci üretilir. 
+```shell
+php artisan student:seed 50
+```
+Öğrencilerin random üretilmesinden sorumlu class: `app/Console/Commands/SeedStudents.php`  
+Üretilen öğrenci dataları `storage/app/students.txt` dosyasında saklanır.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Seçilecek Öğrencilerin Güncellenmesi
+Örnek: Aşağıdaki komut ile birlikte 5 random öğrenci seçilir ve seçilen öğrenciler indexleri kaydedilir 
+(Bir sonraki seçimde aynı öğrencilerin gösterilmemesi için.) 
+```shell
+php artisan student:update-indexes 5
+```
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Bu komut her 1 dakikada otomatik olarak çalıştırılır.  
+Komutun hangi sıklıkla çağıralacağını belirleyen class: `app/Console/Kernel.php`  
+Bu class içerisinde her `1` dakikada random `3` öğrenci seçileceği tanımlanır:
+```php
+protected function schedule(Schedule $schedule): void
+{
+    $numberOfSelectedStudents = 3;
+    $schedule->command("student:update-indexes {$numberOfSelectedStudents}")->everyMinute();
+}
+```
+Diğer frekans seçenekleri için: https://laravel.com/docs/9.x/scheduling#schedule-frequency-options
 
-## Learning Laravel
+Öğrencilerin random seçiminden sorumlu class: `app/Console/Commands/UpdateStudentIndexes.php`  
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Seçilen öğrencilerin indexleri `storage/app/indexes.txt` dosyasında saklanır.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+## Routes ve İçeriğin Üretilmesi
+Route dosyası: `routes/web.php` Gelen `GET` isteğinin karşılandığı dosyadır.  
+`Blade` (https://laravel.com/docs/9.x/blade) tarafından üretilmiş html sayfası döner.
+Blade Template'lerini `resources/views` dosyası altında bulabilirsiniz. Ana Blade Template'i `resources/views/app.blade.php`'dır.  
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Bu template içerisinde, verilen `lang` parametresine göre `İngilizce` veya `Türkçe` içerik üretilir:  
+```php
+@if($lang === 'tr')
+    @include('tr.alumni')
+@else
+    @include('en.alumni')
+@endif
+```
 
-## Laravel Sponsors
-
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
-
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```text
+tr.alumni --> resources/views/tr/alumni.blade.php
+en.alumni --> resources/views/en/alumni.blade.php
+```
+`lang` parametresi `routes/web.php`'dan `resources/views/app.blade.php`'a verilir:
+```php
+return view('app',
+        [
+            "lang" => $lang,
+            ...
+            ...
+```
