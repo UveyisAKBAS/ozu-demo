@@ -7,49 +7,44 @@ use Illuminate\Support\Facades\Storage;
 
 class UpdateStudentIndexes extends Command
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
-    protected $signature = 'student:update-indexes';
-
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
+    protected $signature = 'student:update-indexes {studentNumber=4}';
     protected $description = 'Updates student indexes';
 
-    
+
     public function handle()
     {
-        $this->renewStudentIndexes();
+        $studentNumber = intval($this->argument('studentNumber'));
+        $this->renewStudentIndexes($studentNumber);
     }
 
-    private function renewStudentIndexes() {
+    private function renewStudentIndexes(int $studentNumber)
+    {
+        $previousIndexes = $this->getPreviousIndexes();
+        $newIndexes = $this->selectRandomIndexes($studentNumber, $previousIndexes);
+        $this->saveSelectedIndexes($newIndexes);
+    }
 
+    private function getPreviousIndexes()
+    {
         $previousIndexes = [];
         if (Storage::disk('local')->exists('indexes.txt')) {
             $previousIndexes = json_decode(Storage::get('indexes.txt'));
         }
 
-
-        $newIndexes = $this->selectRandomIndexes(4, $previousIndexes);
-        $this->saveSelectedIndexes($newIndexes);
+        return $previousIndexes;
     }
 
-    private function selectRandomIndexes(int $num, array $previousIndexes): array
+    private function selectRandomIndexes(int $studentNumber, array $previousIndexes): array
     {
         $students = json_decode(Storage::get('students.txt'));
 
         $indexes = collect(range(0, count($students) - 1))->except($previousIndexes);
 
-        if ($indexes->count() < $num) {
-            $num = $indexes->count();
+        if ($indexes->count() < $studentNumber) {
+            $studentNumber = $indexes->count();
         }
 
-        return $indexes->shuffle()->slice(0, $num)->toArray();
+        return $indexes->shuffle()->slice(0, $studentNumber)->toArray();
     }
 
     private function saveSelectedIndexes(array $indexes)

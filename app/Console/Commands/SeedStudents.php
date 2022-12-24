@@ -2,32 +2,28 @@
 
 namespace App\Console\Commands;
 
+use Faker;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Storage;
-use Faker;
 
 class SeedStudents extends Command
 {
-    protected $signature = 'student:seed {studentNumber=30: Number of students to generate}';
+    protected $signature = 'student:seed {population=30: Number of students to generate}';
     protected $description = 'Generates random students';
 
     public function handle()
     {
-        $studentNumber = intval($this->argument('studentNumber'));
-        $this->seedStudents($studentNumber);
+        $population = intval($this->argument('population'));
+        $this->seedStudents($population);
     }
 
-    public function seedStudents(int $studentNumber)
+    public function seedStudents(int $population)
     {
-        // https://www.ozyegin.edu.tr/sites/default/files/upload/MuhendislikFakultesi/naz.png
-        // https://www.ozyegin.edu.tr/sites/default/files/upload/MuhendislikFakultesi/taha_0.png
-        // https://www.ozyegin.edu.tr/sites/default/files/upload/MuhendislikFakultesi/deniz.png
-
         $faker = Faker\Factory::create();
 
         $students = [];
 
-        foreach (range(1, $studentNumber) as $number) {
+        foreach (range(1, $population) as $number) {
 
             $student = [
                 "firstname" => $faker->firstName(),
@@ -40,5 +36,9 @@ class SeedStudents extends Command
         }
 
         Storage::disk('local')->put('students.txt', json_encode($students));
+
+        // https://www.ozyegin.edu.tr/sites/default/files/upload/MuhendislikFakultesi/naz.png
+        // https://www.ozyegin.edu.tr/sites/default/files/upload/MuhendislikFakultesi/taha_0.png
+        // https://www.ozyegin.edu.tr/sites/default/files/upload/MuhendislikFakultesi/deniz.png
     }
 }
