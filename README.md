@@ -72,3 +72,30 @@ return view('app',
             ...
             ...
 ```
+
+Blade Templateleri içerisinde öğrencilerin dinamik olarak gösterilmesi için `Blade Directives` (https://laravel.com/docs/9.x/blade#blade-directives) kullanıldı.  
+Örnek olarak: `resources/views/en/alumni.blade.php` templatinde, öğrencilerin gösterimi için kullanılan kodun bir kısmı:
+```php
+@foreach ($students as $student)
+    <div class="...">
+        <div class="...">
+            <div style="...">
+                <div class="..." style="...">
+                    <h6 style="...">
+                        {{ $student->firstname }} {{ $student->lastname }}
+                    </h6>
+                    <div class="textIcerik" id="stil289">
+                        ...
+                        <strong>{{ $student->firstname }} {{ $student->lastname }}</strong>
+                        @foreach($student->paragraphs as $paragraph)
+                            <p>{{ $paragraph }}</p>
+                            <br>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+@endforeach
+```
+`Blade Directives` yardımıyla seçilen öğrencilerin her biri için dinamik olarak HTML kodu üretildi.
